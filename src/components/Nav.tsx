@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useSpring } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
 
 const links = [
@@ -12,7 +12,13 @@ const links = [
   { id: "portfolio", label: "Portfolio" },
 ] as const;
 
+const initials = profile.name
+  .split(" ")
+  .map((part) => part[0])
+  .join("");
+
 export function Nav() {
+  const menuButton = useRef<HTMLButtonElement>(null);
   const [active, setActive] = useState<string>("");
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -43,6 +49,19 @@ export function Nav() {
     return () => observer.disconnect();
   }, []);
 
+  // Escape closes the mobile menu and hands focus back to the button that opened it.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        menuButton.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
@@ -59,10 +78,12 @@ export function Nav() {
           onClick={() => setOpen(false)}
         >
           <span className="grid h-7 w-7 place-items-center bg-accent text-[0.7rem] font-bold text-accent-ink">
-            AC
+            {initials}
           </span>
           <span className="hidden text-fg sm:inline">
-            avery<span className="text-accent">.</span>chan
+            {profile.firstName.toLowerCase()}
+            <span className="text-accent">.</span>
+            {profile.lastName.toLowerCase()}
           </span>
         </a>
 
@@ -94,6 +115,7 @@ export function Nav() {
         </nav>
 
         <button
+          ref={menuButton}
           type="button"
           className="grid h-10 w-10 place-items-center border border-line md:hidden"
           aria-expanded={open}
@@ -118,6 +140,8 @@ export function Nav() {
 
       <div
         id="mobile-nav"
+        // inert removes the closed menu from the Tab order and from screen readers.
+        inert={!open}
         className={`grid overflow-hidden transition-[grid-template-rows] duration-300 md:hidden ${
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         }`}
@@ -129,7 +153,6 @@ export function Nav() {
                 <a
                   href={`#${l.id}`}
                   onClick={() => setOpen(false)}
-                  tabIndex={open ? 0 : -1}
                   className="flex items-baseline gap-4 py-4 text-2xl font-medium tracking-tight"
                 >
                   <span className="label text-accent">0{i + 1}</span>

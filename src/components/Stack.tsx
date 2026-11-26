@@ -6,15 +6,7 @@ export function Stack() {
   return (
     <section id="stack" className="border-t border-line py-24 md:py-36">
       <div className="container-x">
-        <SectionHeading
-          index="04"
-          label="Stack and skills"
-          title={
-            <>
-              The toolchain, <span className="text-muted">and what I use it for.</span>
-            </>
-          }
-        />
+        <SectionHeading index="04" {...profile.sections.stack} />
 
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">

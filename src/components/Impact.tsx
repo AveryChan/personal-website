@@ -7,15 +7,7 @@ export function Impact() {
   return (
     <section id="impact" className="border-y border-line bg-surface/40 py-24 md:py-36">
       <div className="container-x">
-        <SectionHeading
-          index="02"
-          label="Impact"
-          title={
-            <>
-              Measured in runtime, cost <span className="text-muted">and hours returned.</span>
-            </>
-          }
-        />
+        <SectionHeading index="02" {...profile.sections.impact} />
 
         <dl className="grid border-t border-l border-line sm:grid-cols-2 lg:grid-cols-4">
           {profile.metrics.map((m, i) => (
@@ -27,10 +19,10 @@ export function Impact() {
               <dt className="label">{m.label}</dt>
               <dd className="mt-8">
                 <span className="block text-6xl leading-none font-semibold tracking-[-0.05em] text-accent md:text-7xl">
-                  {m.display ? (
+                  {"display" in m ? (
                     m.display
                   ) : (
-                    <CountUp value={m.value ?? 0} prefix={m.prefix} suffix={m.suffix} />
+                    <CountUp value={m.value} prefix={m.prefix} suffix={m.suffix} />
                   )}
                 </span>
                 <span className="mt-6 block min-h-[4.5rem] text-[0.95rem] leading-relaxed text-muted">

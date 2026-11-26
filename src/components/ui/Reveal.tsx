@@ -1,30 +1,50 @@
 "use client";
 
-import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 
 type RevealProps = {
   children: ReactNode;
+  /** Seconds to wait after the element comes into view. */
   delay?: number;
-  y?: number;
   className?: string;
-  as?: "div" | "li" | "article" | "p" | "h2" | "h3";
+  as?: "div" | "li" | "article";
 };
 
-const easeOut = [0.22, 1, 0.36, 1] as const;
+/**
+ * Fades and lifts content into place once it scrolls into view.
+ *
+ * The server renders the content fully visible. The hidden starting state lives in
+ * globals.css and only applies once JavaScript is running, so the page stays
+ * readable if scripts fail to load.
+ */
+export function Reveal({ children, delay = 0, className, as: Tag = "div" }: RevealProps) {
+  const [node, setNode] = useState<HTMLElement | null>(null);
+  const [revealed, setRevealed] = useState(false);
 
-/** Fades and lifts content into place once it scrolls into view. */
-export function Reveal({ children, delay = 0, y = 24, className, as = "div" }: RevealProps) {
-  const Component = motion[as];
+  useEffect(() => {
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [node]);
+
   return (
-    <Component
+    <Tag
+      ref={setNode}
+      data-reveal=""
+      data-revealed={revealed ? "" : undefined}
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-      transition={{ duration: 0.8, delay, ease: easeOut }}
+      style={{ "--reveal-delay": `${delay}s` } as CSSProperties}
     >
       {children}
-    </Component>
+    </Tag>
   );
 }

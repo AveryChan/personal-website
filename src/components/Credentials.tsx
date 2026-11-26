@@ -7,15 +7,7 @@ export function Credentials() {
   return (
     <section id="credentials" className="border-t border-line py-24 md:py-36">
       <div className="container-x">
-        <SectionHeading
-          index="05"
-          label="Credentials"
-          title={
-            <>
-              Certified across <span className="text-muted">Azure, AWS and SAS.</span>
-            </>
-          }
-        />
+        <SectionHeading index="05" {...profile.sections.credentials} />
 
         <ul className="grid gap-px border border-line bg-line md:grid-cols-3">
           {credentials.map((c, i) => (

@@ -3,11 +3,11 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export function About() {
-  const { about, languages, location } = profile;
+  const { about, languages, location, sections } = profile;
   return (
     <section id="about" className="py-24 md:py-36">
       <div className="container-x">
-        <SectionHeading index="01" label="About" title={about.lead} />
+        <SectionHeading index="01" {...sections.about} />
 
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-8">
           <div className="space-y-6 lg:col-span-7">

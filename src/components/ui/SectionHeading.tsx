@@ -1,13 +1,12 @@
+import type { SectionCopy } from "@/content/profile";
 import { Reveal } from "./Reveal";
 
-type SectionHeadingProps = {
+type SectionHeadingProps = SectionCopy & {
+  /** Two-digit section number, e.g. "02". */
   index: string;
-  label: string;
-  title: React.ReactNode;
-  intro?: string;
 };
 
-export function SectionHeading({ index, label, title, intro }: SectionHeadingProps) {
+export function SectionHeading({ index, label, title, muted, intro }: SectionHeadingProps) {
   return (
     <header className="mb-14 md:mb-20">
       <Reveal>
@@ -20,6 +19,7 @@ export function SectionHeading({ index, label, title, intro }: SectionHeadingPro
       <Reveal delay={0.08}>
         <h2 className="mt-8 max-w-4xl text-4xl leading-[1.02] font-semibold tracking-[-0.035em] text-balance md:text-6xl">
           {title}
+          {muted ? <span className="text-muted"> {muted}</span> : null}
         </h2>
       </Reveal>
       {intro ? (

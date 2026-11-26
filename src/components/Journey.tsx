@@ -3,6 +3,7 @@
 import { motion, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { useRef, useState } from "react";
 import { profile, type Role } from "@/content/profile";
+import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 function RoleItem({ role, index, last }: { role: Role; index: number; last: boolean }) {
@@ -54,11 +55,8 @@ function RoleItem({ role, index, last }: { role: Role; index: number; last: bool
       </div>
 
       {/* card */}
-      <motion.article
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      <Reveal
+        as="article"
         className="group mb-10 border border-line bg-surface/70 p-6 transition-colors duration-300 hover:border-line-strong md:mb-14 md:p-9"
       >
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -111,7 +109,7 @@ function RoleItem({ role, index, last }: { role: Role; index: number; last: bool
             </li>
           ))}
         </ul>
-      </motion.article>
+      </Reveal>
     </li>
   );
 }
@@ -120,17 +118,7 @@ export function Journey() {
   return (
     <section id="journey" className="py-24 md:py-36">
       <div className="container-x">
-        <SectionHeading
-          index="03"
-          label="Career journey"
-          title={
-            <>
-              From reporting on the data{" "}
-              <span className="text-muted">to engineering the platform.</span>
-            </>
-          }
-          intro="Eight years across advertising, publishing, retail and financial services, moving steadily closer to the infrastructure."
-        />
+        <SectionHeading index="03" {...profile.sections.journey} />
 
         <ol className="relative">
           {profile.roles.map((role, i) => (

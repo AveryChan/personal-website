@@ -3,6 +3,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ArrowUpRight } from "@/components/ui/Icons";
 
 export function Contact() {
+  const { contact, sections } = profile;
   const socials = profile.socials.filter((s) => s.href);
   return (
     <section id="contact" className="relative overflow-hidden py-28 md:py-44">
@@ -14,21 +15,23 @@ export function Contact() {
         <Reveal>
           <div className="flex items-center gap-4">
             <span className="label text-accent">07</span>
-            <span className="label">/ Contact</span>
+            <span className="label">/ {sections.contact.label}</span>
             <span aria-hidden="true" className="h-px flex-1 bg-line" />
           </div>
         </Reveal>
         <Reveal delay={0.08}>
           <h2 className="mt-10 max-w-5xl text-5xl leading-[0.95] font-semibold tracking-[-0.045em] text-balance md:text-8xl">
-            Have a data platform to <span className="text-accent">build, fix or migrate?</span>
+            {sections.contact.title} <span className="text-accent">{sections.contact.muted}</span>
           </h2>
         </Reveal>
         <Reveal delay={0.16}>
           <a
-            href={`mailto:${profile.email}`}
-            className="group mt-14 inline-flex max-w-full items-center gap-4 border-b border-line-strong pb-4 text-xl font-medium tracking-[-0.02em] transition-colors hover:border-accent hover:text-accent sm:text-3xl md:text-4xl"
+            href={contact.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-14 inline-flex max-w-full items-center gap-4 border-b border-line-strong pb-4 text-2xl font-medium tracking-[-0.02em] transition-colors hover:border-accent hover:text-accent sm:text-3xl md:text-4xl"
           >
-            <span className="min-w-0 break-all">{profile.email}</span>
+            <span className="min-w-0">{contact.label}</span>
             <ArrowUpRight className="h-6 w-6 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 md:h-8 md:w-8" />
           </a>
         </Reveal>

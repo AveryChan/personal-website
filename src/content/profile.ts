@@ -1,6 +1,6 @@
 /**
  * Single source of truth for all site content.
- * Edit this file when the CV changes. Nothing else needs to be touched.
+ * Edit this file when the CV changes. Components only decide how it is displayed.
  */
 
 export type Role = {
@@ -17,16 +17,15 @@ export type Role = {
   tags: string[];
 };
 
-export type Metric = {
-  /** Animated count-up number. Omit and use `display` for non-numeric figures. */
-  value?: number;
-  prefix?: string;
-  suffix?: string;
-  /** Static text shown instead of a count-up. */
-  display?: string;
+type MetricBase = {
   label: string;
   detail: string;
 };
+
+/** A metric is either an animated number or a fixed piece of text, never neither. */
+export type Metric =
+  | (MetricBase & { value: number; prefix?: string; suffix?: string })
+  | (MetricBase & { display: string });
 
 export type PortfolioItem = {
   id: string;
@@ -43,13 +42,90 @@ export type Social = {
   href: string;
 };
 
+/** One line of the "pipeline run" panel in the hero. */
+export type RunLogRow = {
+  step: string;
+  text: string;
+  note?: string;
+  done: boolean;
+};
+
+/** Heading text for a section. `muted` is the greyed-out second half of the title. */
+export type SectionCopy = {
+  label: string;
+  title: string;
+  muted?: string;
+  intro?: string;
+};
+
+const metrics: Metric[] = [
+  {
+    value: 80,
+    prefix: "> ",
+    suffix: "%",
+    label: "Faster pipelines",
+    detail:
+      "End-to-end runtime cut by migrating client pipelines from SAS to Databricks (PySpark).",
+  },
+  {
+    value: 40,
+    suffix: "%",
+    label: "Lower cloud spend",
+    detail: "Monthly GCP cost reduced by navigating and optimising legacy systems.",
+  },
+  {
+    value: 90,
+    suffix: "%",
+    label: "Less manual reporting",
+    detail: "Traders' reporting workload removed with a Python report automation application.",
+  },
+  {
+    display: "TB+",
+    label: "Multi-terabyte scale",
+    detail: "Multi-terabyte datasets processed through a consolidated GCP data architecture.",
+  },
+];
+
+/** Keep the figures here in step with `metrics` above. */
+const runLog: RunLogRow[] = [
+  { done: true, step: "extract", text: "analytics · SCMP, Dentsu Aegis" },
+  { done: true, step: "transform", text: "SAS → Databricks (PySpark)", note: "-80% runtime" },
+  { done: true, step: "optimise", text: "GCP monthly spend", note: "-40% cost" },
+  { done: false, step: "load", text: "senior data engineer", note: "running" },
+];
+
+const portfolio: PortfolioItem[] = [
+  {
+    id: "case-studies",
+    title: "Pipeline case studies",
+    description:
+      "Deep dives into migrations, architecture decisions and the cost and runtime numbers behind them.",
+    tag: "Case studies",
+  },
+  {
+    id: "writing",
+    title: "Notes from the warehouse",
+    description: "Short, practical writing on data modelling, orchestration and cloud cost.",
+    tag: "Writing",
+  },
+  {
+    id: "open-source",
+    title: "Open-source and tooling",
+    description: "Reusable pipeline templates, CI/CD patterns and utilities.",
+    tag: "Code",
+  },
+];
+
+/** Extra links shown under the main contact button. */
+const socials: Social[] = [{ label: "GitHub", href: "" }];
+
 export const profile = {
   name: "Avery Chan",
   firstName: "Avery",
   lastName: "Chan",
   title: "Senior Data Engineer",
   location: "Hong Kong",
-  email: "averychanyt@gmail.com",
+  timezone: "UTC+8",
   tagline: "I turn tangled legacy pipelines into fast, governed, cost-efficient data platforms.",
   description:
     "Avery Chan is a Senior Data Engineer specialising in cloud data architecture, pipeline migration and cost optimisation on GCP, Azure and Databricks.",
@@ -57,7 +133,6 @@ export const profile = {
   languages: ["English", "Chinese"],
 
   about: {
-    lead: "Data analyst turned data engineer, with a bias for systems that are simple to run and cheap to keep.",
     paragraphs: [
       "I started in analytics, building dashboards and reports for publishers, advertisers and sales teams. That work taught me what the business actually asks of its data, and what breaks when pipelines are an afterthought.",
       "Today I design and build the platforms underneath: dimensional models, standardised pipelines and orchestration across GCP, Azure and Databricks. I work directly with business teams and clients in banking, insurance and luxury retail to turn requirements into a target-state architecture, then ship it.",
@@ -71,33 +146,8 @@ export const profile = {
     ],
   },
 
-  metrics: [
-    {
-      value: 80,
-      prefix: "> ",
-      suffix: "%",
-      label: "Faster pipelines",
-      detail:
-        "End-to-end runtime cut by migrating client pipelines from SAS to Databricks (PySpark).",
-    },
-    {
-      value: 40,
-      suffix: "%",
-      label: "Lower cloud spend",
-      detail: "Monthly GCP cost reduced by navigating and optimising legacy systems.",
-    },
-    {
-      value: 90,
-      suffix: "%",
-      label: "Less manual reporting",
-      detail: "Traders' reporting workload removed with a Python report automation application.",
-    },
-    {
-      display: "TB+",
-      label: "Multi-terabyte scale",
-      detail: "Multi-terabyte datasets processed through a consolidated GCP data architecture.",
-    },
-  ] satisfies Metric[],
+  metrics,
+  runLog,
 
   roles: [
     {
@@ -258,32 +308,56 @@ export const profile = {
     period: "09/2016 — 07/2018",
   },
 
-  portfolio: [
-    {
-      id: "case-studies",
-      title: "Pipeline case studies",
-      description:
-        "Deep dives into migrations, architecture decisions and the cost and runtime numbers behind them.",
-      tag: "Case studies",
-    },
-    {
-      id: "writing",
-      title: "Notes from the warehouse",
-      description: "Short, practical writing on data modelling, orchestration and cloud cost.",
-      tag: "Writing",
-    },
-    {
-      id: "open-source",
-      title: "Open-source and tooling",
-      description: "Reusable pipeline templates, CI/CD patterns and utilities.",
-      tag: "Code",
-    },
-  ] as PortfolioItem[],
+  portfolio,
+  socials,
 
-  socials: [
-    { label: "LinkedIn", href: "" },
-    { label: "GitHub", href: "" },
-  ] satisfies Social[],
+  /** Where the contact section sends visitors. */
+  contact: {
+    label: "Connect on LinkedIn",
+    href: "http://linkedin.com/p/avery-chan",
+  },
+
+  sections: {
+    about: {
+      label: "About",
+      title:
+        "Data analyst turned data engineer, with a bias for systems that are simple to run and cheap to keep.",
+    },
+    impact: {
+      label: "Impact",
+      title: "Measured in runtime, cost",
+      muted: "and hours returned.",
+    },
+    journey: {
+      label: "Career journey",
+      title: "From reporting on the data",
+      muted: "to engineering the platform.",
+      intro:
+        "Across advertising, publishing, retail and financial services, moving steadily closer to the infrastructure.",
+    },
+    stack: {
+      label: "Stack and skills",
+      title: "The toolchain,",
+      muted: "and what I use it for.",
+    },
+    credentials: {
+      label: "Credentials",
+      title: "Certified across",
+      muted: "Azure, AWS and SAS.",
+    },
+    portfolio: {
+      label: "Portfolio",
+      title: "Selected work,",
+      muted: "landing soon.",
+      intro:
+        "Project write-ups, writing and tooling are on the way. Each slot below becomes a live link as it ships.",
+    },
+    contact: {
+      label: "Contact",
+      title: "Have a data platform to",
+      muted: "build, fix or migrate?",
+    },
+  } satisfies Record<string, SectionCopy>,
 };
 
 export type Profile = typeof profile;

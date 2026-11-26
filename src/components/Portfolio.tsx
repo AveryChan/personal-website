@@ -7,16 +7,7 @@ export function Portfolio() {
   return (
     <section id="portfolio" className="border-y border-line bg-surface/40 py-24 md:py-36">
       <div className="container-x">
-        <SectionHeading
-          index="06"
-          label="Portfolio"
-          title={
-            <>
-              Selected work, <span className="text-muted">landing soon.</span>
-            </>
-          }
-          intro="Project write-ups, writing and tooling are on the way. Each slot below becomes a live link as it ships."
-        />
+        <SectionHeading index="06" {...profile.sections.portfolio} />
 
         <ul className="grid gap-5 md:grid-cols-3">
           {profile.portfolio.map((item, i) => {

@@ -142,14 +142,14 @@ flowchart LR
 
 Reading left to right:
 
-1. **`profile.ts`** is the only place content lives. Your roles, numbers and links are plain data.
+1. `profile.ts` is the only place content lives. Your roles, numbers and links are plain data.
 2. **Section components** each read the part of that data they need and return HTML describing how to display it.
-3. **`page.tsx`** places the sections in order.
-4. **`layout.tsx`** wraps the page in the `<html>` and `<body>` tags and attaches fonts and the page title.
+3. `page.tsx` places the sections in order.
+4. `layout.tsx` wraps the page in the `<html>` and `<body>` tags and attaches fonts and the page title.
 5. **The build** runs all of that once and saves the output.
 6. **The browser** receives ready-made HTML, then downloads JavaScript that makes the interactive parts work. That second step, where React attaches behaviour to HTML that already exists, is called *hydration*.
 
-The practical consequence: **when your CV changes, you edit `profile.ts` and nothing else**. What stays in the components is interface wording such as "Coming soon" and "Active".
+The practical consequence: **when your CV changes, you edit** `profile.ts` **and nothing else**. What stays in the components is interface wording such as "Coming soon" and "Active".
 
 ### 3.3 What a component is
 
@@ -227,7 +227,7 @@ Then comes the data itself, one large object:
 ```ts
 export const profile = {
   name: "Avery Chan",
-  title: "Senior Data Engineer",
+  title: "Data Engineer",
   location: "Hong Kong",
   // ...
   roles: [
@@ -260,7 +260,6 @@ Three design choices to notice in this file:
 
 - **Hidden until filled.** `socials` contains GitHub with an empty `href`. The Contact section filters out empty ones, so nothing shows until you add a URL.
 - **A metric is one of two shapes.** The `Metric` type says a metric has either a numeric `value` (animated) or a `display` string (static, used for "TB+"). An entry with neither fails the build:
-
   ```ts
   export type Metric =
     | (MetricBase & { value: number; prefix?: string; suffix?: string })
@@ -600,7 +599,6 @@ Every section opens with the same pattern: a numbered label, a rule, a large hea
 - `{intro ? (...) : null}` is **conditional rendering**: show the paragraph only if `intro` was provided. The greyed-out second half of a title (`muted`) works the same way.
 - `aria-hidden="true"` hides the decorative line from screen readers, which would otherwise announce an empty element.
 - The text comes from `profile.sections`. A section passes its entry with the *spread* syntax, which hands over every field of an object as a separate prop:
-
   ```tsx
   <SectionHeading index="02" {...profile.sections.impact} />
   ```
@@ -627,13 +625,13 @@ Every section opens with the same pattern: a numbered label, a rule, a large hea
 </dl>
 ```
 
-- **`.map()`** is how React renders a list. It takes each metric and returns markup for it, the same idea as a `SELECT` that produces one output row per input row.
-- **`key`** gives each item a stable identity so React can track it. It must be unique within the list.
-- **`delay={i * 0.08}`** staggers the four cards using the item's position.
-- **`"display" in m`** asks which of the two metric shapes this one is. Inside the first branch TypeScript knows `m.display` exists; inside the second it knows `m.value` is a number.
+- `.map()` is how React renders a list. It takes each metric and returns markup for it, the same idea as a `SELECT` that produces one output row per input row.
+- `key` gives each item a stable identity so React can track it. It must be unique within the list.
+- `delay={i * 0.08}` staggers the four cards using the item's position.
+- `"display" in m` asks which of the two metric shapes this one is. Inside the first branch TypeScript knows `m.display` exists; inside the second it knows `m.value` is a number.
 - **The responsive grid:** one column on phones, `sm:grid-cols-2` gives two columns from 640px, `lg:grid-cols-4` gives four from 1024px.
 - **Semantic HTML:** `<dl>`, `<dt>` and `<dd>` mean "description list, term, description". Choosing tags that describe the content helps screen readers and search engines.
-- **`group`** on the card and `group-hover:scale-x-100` on a child line means "when the card is hovered, change the child". That is how the lime line sweeps across the top of a card on hover.
+- `group` on the card and `group-hover:scale-x-100` on a child line means "when the card is hovered, change the child". That is how the lime line sweeps across the top of a card on hover.
 
 ### 4.9 `src/components/Hero.tsx`: animation on page load, in CSS only
 
@@ -867,7 +865,7 @@ const socials = profile.socials.filter((s) => s.href);
 
 ### 4.13 Configuration files
 
-**`package.json`** lists what the project depends on and defines the scripts:
+`package.json` lists what the project depends on and defines the scripts:
 
 ```json
 "scripts": {
@@ -885,15 +883,15 @@ const socials = profile.socials.filter((s) => s.href);
 
 `npm run dev` runs whatever is written next to `"dev"`. `dependencies` are packages the site needs to run; `devDependencies` are tools needed only while developing. `package-lock.json` records the exact version of every package installed, so the same versions are installed on any machine.
 
-**`next.config.ts`** holds Next.js settings. It is unchanged from what the project generator produced: it enables `cacheComponents` and `partialPrefetching` and tells the bundler to process CSS files with Tailwind. This site does not depend on either caching flag, since its only page is fully static.
+`next.config.ts` holds Next.js settings. It is unchanged from what the project generator produced: it enables `cacheComponents` and `partialPrefetching` and tells the bundler to process CSS files with Tailwind. This site does not depend on either caching flag, since its only page is fully static.
 
-**`tsconfig.json`** configures TypeScript. Two settings matter for reading the code: `"strict": true` turns on the strictest checking, and `"paths": { "@/*": ["./src/*"] }` defines the `@/` import shortcut.
+`tsconfig.json` configures TypeScript. Two settings matter for reading the code: `"strict": true` turns on the strictest checking, and `"paths": { "@/*": ["./src/*"] }` defines the `@/` import shortcut.
 
-**`eslint.config.mjs`** loads Next.js's recommended lint rules and lists folders to skip, including the generated `.cloudflare/`, `.vinext/` and `dist/` folders.
+`eslint.config.mjs` loads Next.js's recommended lint rules and lists folders to skip, including the generated `.cloudflare/`, `.vinext/` and `dist/` folders.
 
-**`playwright.config.ts`** tells the test runner where the tests are and which address to open.
+`playwright.config.ts` tells the test runner where the tests are and which address to open.
 
-**`.gitignore`** lists files git must never track. The relevant lines:
+`.gitignore` lists files git must never track. The relevant lines:
 
 ```gitignore
 .env*
@@ -908,7 +906,7 @@ Your CV contains your phone number and `.env` may contain secrets, so neither sh
 `vite.config.ts`, `cloudflare.config.ts`, `postcss.config.mjs`, the four `*:vinext` scripts and the "Deploy on Cloudflare" section of `README.md` were added after the site itself was built and are not part of the original build described in this tutorial. Based on reading those files:
 
 - They set up a second, parallel way to build the same `src/` code using **vinext** (a tool that runs Next.js-style apps on **Vite**, a different bundler) so the result can run as a **Cloudflare Worker**, which is Cloudflare's hosting for small server programs.
-- `cloudflare.config.ts` names the Worker `avery-chan-site`.
+- `cloudflare.config.ts` names the Worker `personal-site`.
 - `npm run dev` and `npm run build` still use standard Next.js and are unaffected.
 
 `npm run build:vinext` completes successfully with the current code. Deploying was not tried, so treat `README.md` as the reference for that. Note that the top half of `README.md` is still the generator's default text and says the project uses the Geist font, which is no longer true.
@@ -917,9 +915,9 @@ Your CV contains your phone number and `.env` may contain secrets, so neither sh
 
 Four kinds of check are in place:
 
-1. **`npm run build`** type-checks every file and fails on any TypeScript error. During the original build it caught a real mistake: the portfolio component read `item.href`, but the data had no `href` field yet, so TypeScript reported that the property did not exist.
-2. **`npm run lint`** scans the code for likely mistakes.
-3. **`npm test`** opens the site in a real browser and checks six things:
+1. `npm run build` type-checks every file and fails on any TypeScript error. During the original build it caught a real mistake: the portfolio component read `item.href`, but the data had no `href` field yet, so TypeScript reported that the property did not exist.
+2. `npm run lint` scans the code for likely mistakes.
+3. `npm test` opens the site in a real browser and checks six things:
    - the name, title and all seven roles are on the page, with no browser errors;
    - content fades in and the figures count up when scrolled to;
    - the contact link goes to LinkedIn and no email address appears in the page;
@@ -971,14 +969,12 @@ One of those lines also made a claim that is not in the CV: "Eight years across 
 
 - Section headings moved to `profile.sections`, the panel rows to `profile.runLog`, and the timezone to `profile.timezone`.
 - The nav derives the initials and wordmark from the name:
-
   ```ts
   const initials = profile.name
     .split(" ")
     .map((part) => part[0])
     .join("");
   ```
-
 - The year count was removed. The intro now reads "Across advertising, publishing, retail and financial services, moving steadily closer to the infrastructure." If you want a number there, add it to `profile.sections.journey.intro`.
 
 One duplication remains by design: the hero panel repeats the 80% and 40% figures from `metrics`. They now sit next to each other in `profile.ts` with a comment, so they are easy to change together.

@@ -91,7 +91,7 @@ const runLog: RunLogRow[] = [
   { done: true, step: "extract", text: "analytics · SCMP, Dentsu Aegis" },
   { done: true, step: "transform", text: "SAS → Databricks (PySpark)", note: "-80% runtime" },
   { done: true, step: "optimise", text: "GCP monthly spend", note: "-40% cost" },
-  { done: false, step: "load", text: "senior data engineer", note: "running" },
+  { done: false, step: "load", text: "data engineer", note: "running" },
 ];
 
 const portfolio: PortfolioItem[] = [
@@ -123,23 +123,24 @@ export const profile = {
   name: "Avery Chan",
   firstName: "Avery",
   lastName: "Chan",
-  title: "Senior Data Engineer",
+  title: "Data Engineer",
   location: "Hong Kong",
   timezone: "UTC+8",
-  tagline: "I turn tangled legacy pipelines into fast, governed, cost-efficient data platforms.",
+  tagline: "I turn tangled legacy pipelines into fast, governed, cost-efficient data architectures to support business objectives.",
   description:
-    "Avery Chan is a Senior Data Engineer specialising in cloud data architecture, pipeline migration and cost optimisation on GCP, Azure and Databricks.",
+    "Avery Chan is a Data Engineer specialising in cloud data architecture, pipeline migration and cost optimisation on on-premise and cloud platforms.",
   status: "Open to Senior Data Engineer roles",
   languages: ["English", "Chinese"],
 
   about: {
     paragraphs: [
-      "I started in analytics, building dashboards and reports for publishers, advertisers and sales teams. That work taught me what the business actually asks of its data, and what breaks when pipelines are an afterthought.",
-      "Today I design and build the platforms underneath: dimensional models, standardised pipelines and orchestration across GCP, Azure and Databricks. I work directly with business teams and clients in banking, insurance and luxury retail to turn requirements into a target-state architecture, then ship it.",
-      "My focus is on migration, consolidation and cost: moving legacy workloads onto modern engines, and making the monthly cloud bill go down while the data gets better.",
+      "I started in analytics, building dashboards and automating reports for publishers, advertisers and sales teams. That work taught me what the business actually asks of its data, and what breaks when pipelines are an afterthought.",
+      "Today I design and build the architecture underneath: dimensional models, standardised pipelines and orchestration across on-premise and cloud platforms. I have worked directly with business teams and clients in banking, insurance and retail to turn requirements into a target-state architecture, then execute it.",
+      "My focus is on supporting business objectives with data architectures that are fast, governed, cost-efficient and easy to maintain.",
     ],
     focus: [
-      "Cloud data architecture",
+      "Data architecture",
+      "Data governance",
       "Legacy-to-lakehouse migration",
       "Performance and cost optimisation",
       "Client-facing delivery",
